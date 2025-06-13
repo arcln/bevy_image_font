@@ -277,6 +277,8 @@ pub struct ImageFontText {
     /// If set, overrides the color of the text. This should be an array of 3
     /// bytes, representing the red, green, and blue components of the color.
     pub color: Option<[u8; 4]>,
+    /// The offset of the shadow. Set to None to disable the shadow.
+    pub shadow_offset: Option<u32>,
 }
 
 /// Marks any text where the underlying [`ImageFont`] asset has changed as

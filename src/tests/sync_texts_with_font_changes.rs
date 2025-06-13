@@ -181,6 +181,7 @@ fn setup_app_system_state_and_entity() -> (
         font: font_handle.clone(),
         font_height: Some(36.0),
         color: None,
+        shadow_offset: None,
     });
 
     let system_state: SystemState<Query<Ref<ImageFontText>>> = SystemState::new(app.world_mut());

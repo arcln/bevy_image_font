@@ -21,6 +21,7 @@ use bevy::{
     },
 };
 use bevy_image::{Image, ImageSampler};
+use image::RgbaImage;
 use image::{
     GenericImage as _, GenericImageView as _, ImageBuffer, ImageError, Rgba,
     imageops::{self, FilterType},
@@ -197,6 +198,7 @@ fn render_text_to_image_holder<'borrow>(
 #[expect(
     clippy::cast_possible_truncation,
     clippy::cast_sign_loss,
+    clippy::too_many_lines,
     reason = "numbers are always positive and small enough"
 )]
 fn render_text_to_image(
@@ -225,7 +227,7 @@ fn render_text_to_image(
 
     let width = render_context.text_width() as u32;
     let height = render_context.max_height();
-    let mut output_image = image::RgbaImage::new(width, height);
+    let mut output_image = RgbaImage::new(width, height);
     let font_textures: Vec<ImageBuffer<Rgba<u8>, _>> = textures
         .iter()
         .map(|texture| {
@@ -272,6 +274,45 @@ fn render_text_to_image(
             pixel.0[3] = color[3];
         }
     }
+
+    let output_image = if let Some(shadow_offset) = image_font_text.shadow_offset {
+        let mut output_image_with_shadow = RgbaImage::new(
+            output_image.width() + shadow_offset,
+            output_image.height() + shadow_offset,
+        );
+
+        for row in 0..output_image.height() {
+            for row_index in 0..output_image.width() {
+                let pixel = output_image.get_pixel(row_index, row);
+
+                if pixel.0[3] == 0 {
+                    continue;
+                }
+
+                output_image_with_shadow.put_pixel(
+                    row_index + shadow_offset,
+                    row + shadow_offset,
+                    Rgba([0, 0, 0, 255]),
+                );
+            }
+        }
+
+        for row in 0..output_image.height() {
+            for row_index in 0..output_image.width() {
+                let pixel = output_image.get_pixel(row_index, row);
+
+                if pixel.0[3] == 0 {
+                    continue;
+                }
+
+                output_image_with_shadow.put_pixel(row_index, row, *pixel);
+            }
+        }
+
+        output_image_with_shadow
+    } else {
+        output_image
+    };
 
     let mut bevy_image = Image::new(
         Extent3d {

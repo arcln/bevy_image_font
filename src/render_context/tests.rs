@@ -373,6 +373,7 @@ impl<'app> RenderContextTester<'app> {
             font: handle.clone_weak(),
             font_height: None,
             color: None,
+            shadow_offset: None,
         };
 
         let image_font_assets = app.world().resource::<Assets<ImageFont>>();
