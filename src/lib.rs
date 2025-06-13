@@ -274,6 +274,9 @@ pub struct ImageFontText {
     /// but we allow float values for things like animations.
     #[doc(alias = "line_height")]
     pub font_height: Option<f32>,
+    /// If set, overrides the color of the text. This should be an array of 3
+    /// bytes, representing the red, green, and blue components of the color.
+    pub color: Option<[u8; 4]>,
 }
 
 /// Marks any text where the underlying [`ImageFont`] asset has changed as

@@ -260,6 +260,19 @@ fn render_text_to_image(
         );
     }
 
+    if let Some(color) = image_font_text.color {
+        for pixel in output_image.pixels_mut() {
+            if pixel.0[3] == 0 {
+                continue;
+            }
+
+            pixel.0[0] = color[0];
+            pixel.0[1] = color[1];
+            pixel.0[2] = color[2];
+            pixel.0[3] = color[3];
+        }
+    }
+
     let mut bevy_image = Image::new(
         Extent3d {
             width: output_image.width(),
