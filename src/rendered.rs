@@ -277,8 +277,8 @@ fn render_text_to_image(
 
     let output_image = if let Some(shadow_offset) = image_font_text.shadow_offset {
         let mut output_image_with_shadow = RgbaImage::new(
-            output_image.width() + shadow_offset,
-            output_image.height() + shadow_offset,
+            output_image.width() + shadow_offset * 2,
+            output_image.height() + shadow_offset * 2,
         );
 
         for row in 0..output_image.height() {
@@ -291,6 +291,18 @@ fn render_text_to_image(
 
                 output_image_with_shadow.put_pixel(
                     row_index + shadow_offset,
+                    row + shadow_offset * 2,
+                    Rgba([0, 0, 0, 255]),
+                );
+
+                output_image_with_shadow.put_pixel(
+                    row_index + shadow_offset * 2,
+                    row + shadow_offset * 2,
+                    Rgba([0, 0, 0, 255]),
+                );
+
+                output_image_with_shadow.put_pixel(
+                    row_index + shadow_offset * 2,
                     row + shadow_offset,
                     Rgba([0, 0, 0, 255]),
                 );
@@ -305,7 +317,11 @@ fn render_text_to_image(
                     continue;
                 }
 
-                output_image_with_shadow.put_pixel(row_index, row, *pixel);
+                output_image_with_shadow.put_pixel(
+                    row_index + shadow_offset,
+                    row + shadow_offset,
+                    *pixel,
+                );
             }
         }
 
