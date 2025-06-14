@@ -379,7 +379,7 @@ fn render_glyphs_to_image(
     font_textures: Vec<ImageBuffer<Rgba<u8>, &[u8]>>,
 ) -> Result<(), ImageFontRenderError> {
     let mut x_pos = 0.0;
-    let mut texture_atlas = render_context.font_texture_atlas(' ');
+    let mut texture_atlas = render_context.font_texture_atlas('\0');
     let mut color = Color::default();
 
     for (character, next_character) in render_context
