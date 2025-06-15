@@ -283,7 +283,7 @@ fn update_sprite_values() {
     render_context_tester.test_with_defaults(|render_context| {
         let first_char = render_context.text().filtered_chars().next().unwrap();
 
-        let mut texture_atlas = render_context.font_texture_atlas('A');
+        let mut texture_atlas = render_context.font_texture_atlas('A').unwrap();
         let mut color: Color = css::AZURE.into();
 
         // Make sure the values aren't what we expect after the change before we call

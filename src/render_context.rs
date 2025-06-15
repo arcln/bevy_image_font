@@ -308,12 +308,12 @@ impl<'assets> RenderContext<'assets> {
     /// # Returns
     /// A [`TextureAtlas`] structure containing the layout and character index.
     #[inline]
-    pub(crate) fn font_texture_atlas(&self, character: char) -> TextureAtlas {
-        let image_font_character = &self.image_font.atlas_character_map[&character];
-        TextureAtlas {
+    pub(crate) fn font_texture_atlas(&self, character: char) -> Option<TextureAtlas> {
+        let image_font_character = self.image_font.atlas_character_map.get(&character)?;
+        Some(TextureAtlas {
             layout: self.image_font.atlas_layouts[image_font_character.page_index].clone_weak(),
             index: image_font_character.character_index,
-        }
+        })
     }
 
     /// Returns the filtered text, which includes only characters supported by
